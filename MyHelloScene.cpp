@@ -15,10 +15,34 @@ bool MyHelloScene::init() {
 		return false;
 	}
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Sprite *fish1 = Sprite::create("fish1.png");
+	fish1->setPosition(Point(visibleSize.width*0.5f - 20, visibleSize.height*0.5f));
+	this->addChild(fish1);
+
 	Sprite *fish2 = Sprite::create("fish2.png");
-	fish2->setPosition(Point(visibleSize.width, visibleSize.height / 2));
+	fish2->setPosition(Point(visibleSize.width*0.5f, visibleSize.height *0.5f));
 	this->addChild(fish2);
 
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [](Touch *touch, Event *event) {
+		auto target = static_cast<Sprite *>(event->getCurrentTarget());
+		Point pos = Director::getInstance()->convertToGL(touch->getLocationInView());
+		if (target->getBoundingBox().containsPoint(pos)) {
+			target->setOpacity(100);
+			return true;
+		}
+		return false;
+	};
+	listener->onTouchEnded = [](Touch *touch, Event *event) {
+		auto target = static_cast<Sprite *>(event->getCurrentTarget());
+		target->setOpacity(255);
+	};
+//	listener->setSwallowTouches(true);		//touch event with more layers
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, fish1);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener->clone(), fish2);
+	
+
+/*  get the touchevent
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [](Touch* touch, Event* event) {
 		Point pos1 = touch->getLocation();			//position in 3d
@@ -35,7 +59,7 @@ bool MyHelloScene::init() {
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-
+*/
 /* CallBack Used for animation
 	MoveTo *moveToHome = MoveTo::create(10.0f, Point(visibleSize.width/4, visibleSize.height / 2));
 	auto callbackFunc = [=]() {

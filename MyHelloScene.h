@@ -8,6 +8,7 @@ public:
 	static Scene * createScene();
 	virtual bool init();
 	void menuCloseCallback(Ref * pSender);
+	void backHome();
 	CREATE_FUNC(MyHelloScene);
 };
 

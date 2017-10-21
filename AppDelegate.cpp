@@ -1,9 +1,9 @@
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
-#include "MyHelloScene.h"
+//#include "HelloWorldScene.h"
+//#include "MyHelloScene.h"
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
-
+#include "TollgateScene.h"
 #if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
 #error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
 #endif
@@ -18,7 +18,7 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size designResolutionSize = cocos2d::Size(800, 500);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
@@ -60,6 +60,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("test1", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+		 
 #else
         glview = GLViewImpl::create("test1");
 #endif
@@ -73,8 +74,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
-    auto frameSize = glview->getFrameSize();
+	glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL); // ResolutionPolicy::NO_BORDER);
+	
+	auto frameSize = glview->getFrameSize();
+
+
+	log("framesize %d %d ", frameSize.width, frameSize.height);
+/*
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
@@ -90,13 +96,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
     {        
         director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
     }
-
+	*/
+	glview->setFrameSize(800, 500);
     register_all_packages();
+	auto winsize=Director::getInstance()->getWinSize();
+	log("win w=%f h=%f", winsize.width, winsize.height);
 
     // create a scene. it's an autorelease object
    // auto scene = HelloWorld::createScene();
-	auto scene = MyHelloScene::createScene();
-
+	//auto scene = MyHelloScene::createScene();
+	auto scene = TollgateScene::createScene();
     // run
     director->runWithScene(scene);
 

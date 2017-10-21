@@ -14,6 +14,8 @@ bool MyHelloScene::init() {
 	if (!Layer::init()) {
 		return false;
 	}
+/*
+#if USE_TWO_SPRITE		//Crate two sprite
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Sprite *fish1 = Sprite::create("fish1.png");
 	fish1->setPosition(Point(visibleSize.width*0.5f - 20, visibleSize.height*0.5f));
@@ -22,7 +24,44 @@ bool MyHelloScene::init() {
 	Sprite *fish2 = Sprite::create("fish2.png");
 	fish2->setPosition(Point(visibleSize.width*0.5f, visibleSize.height *0.5f));
 	this->addChild(fish2);
+#endif
+	Label *logText1 = Label::create("", "Arial", 24);
+	logText1->setPosition(100, 100);
+	this->addChild(logText1, 1, 1);
+	Label *logText2 = Label::create("", "Arial", 24);
+	logText2->setPosition(100, 200);
+	this->addChild(logText2, 1, 2);
+	Label *logText3 = Label::create("", "Arial", 24);
+	logText3->setPosition(100, 300);
+	this->addChild(logText3, 1, 3);
+	auto listener = EventListenerTouchAllAtOnce::create();
+	listener->onTouchesBegan = [&](const std::vector<Touch *>& touches, Event *event) {
+		auto logText = (Label *)this->getChildByTag(1);
+		int num = touches.size();
+		logText->setString(Value(num).asString() + " Touches:");
+	};
+	listener->onTouchesMoved = [&](const std::vector<Touch *>&touches, Event *event) {
+		auto logText = (Label*)this->getChildByTag(2);
+		int num = touches.size();
+		std::string text=Value(num).asString() + " Touches:";
+		for (auto &touch : touches) {
+			auto location = touch->getLocation();
+			text += "[touchId" + Value(touch->getID()).asString() + "],";
+		}
+		logText->setString(text);
+		log("%d touches moved", num);
+	};
+	listener->onTouchesEnded = [&](const std::vector<Touch*>&touches, Event *event) {
+		auto logText = (Label*)this->getChildByTag(3);
+		int num = touches.size();
+		logText->setString(Value(num).asString() + "Touches:");
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+
+	*/
+
+/* get which sprite touchevent
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [](Touch *touch, Event *event) {
 		auto target = static_cast<Sprite *>(event->getCurrentTarget());
@@ -40,7 +79,7 @@ bool MyHelloScene::init() {
 //	listener->setSwallowTouches(true);		//touch event with more layers
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, fish1);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener->clone(), fish2);
-	
+*/	
 
 /*  get the touchevent
 	auto listener = EventListenerTouchOneByOne::create();
